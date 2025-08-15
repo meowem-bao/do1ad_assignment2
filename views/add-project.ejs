@@ -1,0 +1,135 @@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-plus-circle"></i> Add New Project
+                </h1>
+                <p class="lead mb-0">
+                    Share your software project with the community. Fill in the details below to get started.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-journal-plus display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">
+                        <i class="bi bi-info-circle me-2"></i>Project Information
+                    </h4>
+                    <a href="/dashboard" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form action="/add-project" method="POST" novalidate>
+                        <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>">
+                        
+                        <div class="mb-4">
+                            <label for="title" class="form-label">
+                                <i class="bi bi-card-heading me-1"></i>Project Title *
+                            </label>
+                            <input type="text" class="form-control" id="title" name="title" required maxlength="255" 
+                                   placeholder="Enter a descriptive title for your project"
+                                   value="<%= typeof formData !== 'undefined' && formData.title ? formData.title : '' %>">
+                            <div class="invalid-feedback">
+                                Please provide a valid project title.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="short_description" class="form-label">
+                                <i class="bi bi-text-paragraph me-1"></i>Short Description *
+                            </label>
+                            <textarea class="form-control" id="short_description" name="short_description" rows="4" 
+                                      required maxlength="500" 
+                                      placeholder="Brief description of your project - what it does, key features, technologies used (max 500 characters)"><%= typeof formData !== 'undefined' && formData.short_description ? formData.short_description : '' %></textarea>
+                            <div class="form-text">Maximum 500 characters</div>
+                            <div class="invalid-feedback">
+                                Please provide a short description.
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="start_date" class="form-label">
+                                        <i class="bi bi-calendar-event me-1"></i>Start Date *
+                                    </label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" required
+                                           value="<%= typeof formData !== 'undefined' && formData.start_date ? formData.start_date : '' %>">
+                                    <div class="invalid-feedback">
+                                        Please provide a start date.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="end_date" class="form-label">
+                                        <i class="bi bi-calendar-check me-1"></i>End Date
+                                    </label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date"
+                                           value="<%= typeof formData !== 'undefined' && formData.end_date ? formData.end_date : '' %>">
+                                    <div class="form-text">Optional - leave blank if not determined</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="phase" class="form-label">
+                                <i class="bi bi-gear me-1"></i>Project Phase *
+                            </label>
+                            <select class="form-select" id="phase" name="phase" required>
+                                <option value="">Select a phase...</option>
+                                <option value="design" <%= (typeof formData !== 'undefined' && formData.phase === 'design') ? 'selected' : '' %>>Design</option>
+                                <option value="development" <%= (typeof formData !== 'undefined' && formData.phase === 'development') || (typeof formData === 'undefined') ? 'selected' : '' %>>Development</option>
+                                <option value="testing" <%= (typeof formData !== 'undefined' && formData.phase === 'testing') ? 'selected' : '' %>>Testing</option>
+                                <option value="deployment" <%= (typeof formData !== 'undefined' && formData.phase === 'deployment') ? 'selected' : '' %>>Deployment</option>
+                                <option value="complete" <%= (typeof formData !== 'undefined' && formData.phase === 'complete') ? 'selected' : '' %>>Complete</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a project phase.
+                            </div>
+                            <div class="form-text">
+                                Choose the current stage of your project development
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-3">
+                            <a href="/dashboard" class="btn btn-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Create Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-lightbulb me-2"></i>Tips for a Great Project Listing
+                    </h5>
+                    <ul class="mb-0">
+                        <li><strong>Title:</strong> Use a clear, descriptive name that explains what your project does</li>
+                        <li><strong>Description:</strong> Include key features, technologies used, and project goals</li>
+                        <li><strong>Phase:</strong> Be honest about your project's current development stage</li>
+                        <li><strong>Dates:</strong> Accurate start dates help track project progress</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

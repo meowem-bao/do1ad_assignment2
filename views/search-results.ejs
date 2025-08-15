@@ -1,0 +1,198 @@
+<!-- Search Header -->
+<div class="search-header">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="bi bi-house"></i> Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+            </ol>
+        </nav>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-search"></i> <%= title %>
+                </h1>
+                <% if ((typeof searchQuery !== 'undefined' && searchQuery) || (typeof searchDate !== 'undefined' && searchDate)) { %>
+                    <p class="lead mb-0">
+                        <% if ((typeof searchQuery !== 'undefined' && searchQuery) && (typeof searchDate !== 'undefined' && searchDate)) { %>
+                            Showing results for "<strong><%= searchQuery %></strong>" OR projects starting on <strong><%= new Date(searchDate).toLocaleDateString() %></strong>
+                        <% } else if (typeof searchQuery !== 'undefined' && searchQuery) { %>
+                            Showing results for "<strong><%= searchQuery %></strong>"
+                        <% } else if (typeof searchDate !== 'undefined' && searchDate) { %>
+                            Showing projects starting on <strong><%= new Date(searchDate).toLocaleDateString() %></strong>
+                        <% } %>
+                    </p>
+                <% } else { %>
+                    <p class="lead mb-0">Browse all projects in our community</p>
+                <% } %>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-funnel display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-3">
+                        <i class="bi bi-search"></i> Search Projects
+                    </h5>
+                    <form action="/search" method="GET" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="query" class="form-label">Search by keywords</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="query"
+                                name="query" 
+                                placeholder="Search by title or description..."
+                                value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                            >
+                        </div>
+                        <div class="col-md-4">
+                            <label for="date" class="form-label">OR search by date</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                id="date"
+                                name="date" 
+                                value="<%= typeof searchDate !== 'undefined' ? searchDate : '' %>"
+                            >
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle"></i> 
+                                You can search by keywords OR by date - no need to fill both fields
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold">
+                    Results 
+                    <span class="badge bg-primary"><%= typeof projects !== 'undefined' ? projects.length : 0 %></span>
+                </h3>
+                <a href="/" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to Home
+                </a>
+            </div>
+
+            <% if (typeof projects === 'undefined' || projects.length === 0) { %>
+                <div class="text-center py-5">
+                    <i class="bi bi-search display-1 text-muted"></i>
+                    <h3 class="text-muted mt-3">No projects found</h3>
+                    <p class="text-muted">Try adjusting your search criteria or browse all projects.</p>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="/" class="btn btn-primary">
+                            <i class="bi bi-house"></i> Browse All Projects
+                        </a>
+                        <% if (typeof user === 'undefined' || !user) { %>
+                            <a href="/register" class="btn btn-outline-primary">
+                                <i class="bi bi-person-plus"></i> Join Community
+                            </a>
+                        <% } else { %>
+                            <a href="/add-project" class="btn btn-outline-primary">
+                                <i class="bi bi-plus-circle"></i> Add Your Project
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="row">
+                    <% projects.forEach(project => { %>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="card-title mb-0">
+                                            <a href="/project/<%= project.pid %>" class="text-decoration-none">
+                                                <%= project.title %>
+                                            </a>
+                                        </h5>
+                                        <% if (project.phase) { %>
+                                            <span class="phase-badge phase-<%= project.phase %>">
+                                                <%= project.phase.charAt(0).toUpperCase() + project.phase.slice(1) %>
+                                            </span>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted">
+                                        <%= project.short_description && project.short_description.length > 100 ? 
+                                            project.short_description.substring(0, 100) + '...' : 
+                                            project.short_description || 'No description available' %>
+                                    </p>
+                                    
+                                    <div class="mt-auto">
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar"></i> 
+                                            Started: <%= new Date(project.start_date).toLocaleDateString() %>
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-person"></i> 
+                                            by <%= project.username || project.email %>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="/project/<%= project.pid %>" class="btn btn-primary btn-sm w-100">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Pagination (if implemented) -->
+                <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+                    <nav aria-label="Search results pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <% if (typeof hasPrevPage !== 'undefined' && hasPrevPage) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="/search?query=<%= encodeURIComponent(searchQuery || '') %>&date=<%= encodeURIComponent(searchDate || '') %>&page=<%= (typeof paginationPage !== 'undefined' ? paginationPage : currentPage) - 1 %>">
+                                        <i class="bi bi-chevron-left"></i> Previous
+                                    </a>
+                                </li>
+                            <% } %>
+                            
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    Page <%= typeof paginationPage !== 'undefined' ? paginationPage : (typeof currentPage !== 'undefined' ? currentPage : 1) %> of <%= totalPages %>
+                                </span>
+                            </li>
+                            
+                            <% if (typeof hasNextPage !== 'undefined' && hasNextPage) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="/search?query=<%= encodeURIComponent(searchQuery || '') %>&date=<%= encodeURIComponent(searchDate || '') %>&page=<%= (typeof paginationPage !== 'undefined' ? paginationPage : currentPage) + 1 %>">
+                                        Next <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+</div>

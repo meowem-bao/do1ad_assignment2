@@ -1,0 +1,89 @@
+<!-- Login Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Welcome Back
+                </h1>
+                <p class="lead mb-0">
+                    Sign in to your account to manage your projects and explore the community.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-person-circle display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="card-title mb-0">
+                        <i class="bi bi-shield-lock me-2"></i>Login to Your Account
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form action="/login" method="POST" novalidate>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">
+                                <i class="bi bi-person me-1"></i>Username
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="username" 
+                                name="username" 
+                                required 
+                                autocomplete="username"
+                                placeholder="Enter your username"
+                            >
+                            <div class="invalid-feedback">
+                                Please provide your username.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-lock me-1"></i>Password
+                            </label>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                autocomplete="current-password"
+                                placeholder="Enter your password"
+                            >
+                            <div class="invalid-feedback">
+                                Please provide your password.
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign In
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">
+                        Don't have an account? 
+                        <a href="/register" class="text-decoration-none">
+                            <strong>Create one here</strong>
+                        </a>
+                    </p>
+                    <small class="text-muted mt-2 d-block">
+                        <a href="/forgot-password" class="text-muted">Forgot your password?</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

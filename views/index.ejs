@@ -1,0 +1,232 @@
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="bi bi-kanban"></i> Welcome to Project Manager
+                </h1>
+                <p class="lead mb-4">
+                    Discover and explore software projects from our community. 
+                    Track development progress, view project details, and find inspiration for your next idea.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <% if (typeof user === 'undefined' || !user) { %>
+                        <a href="/register" class="btn btn-light btn-lg">
+                            <i class="bi bi-person-plus"></i> Join Now
+                        </a>
+                    <% } else { %>
+                        <a href="/add-project" class="btn btn-light btn-lg">
+                            <i class="bi bi-plus-circle"></i> Add Your Project
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-diagram-3 display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <!-- Search Projects -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-3">
+                        <i class="bi bi-search"></i> Search Projects
+                    </h5>
+                    <form action="/search" method="GET" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="searchQuery" class="form-label">Search by keywords</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="searchQuery"
+                                name="query" 
+                                placeholder="Search by title or description..."
+                                value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                            >
+                        </div>
+                        <div class="col-md-4">
+                            <label for="searchDate" class="form-label">OR search by date</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                id="searchDate"
+                                name="date" 
+                                value="<%= typeof searchDate !== 'undefined' ? searchDate : '' %>"
+                            >
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle"></i> 
+                                You can search by keywords OR by date - no need to fill both fields
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-journal-code display-4 text-primary mb-3"></i>
+                    <h3 class="fw-bold"><%= typeof projects !== 'undefined' ? projects.length : 0 %></h3>
+                    <p class="text-muted">Active Projects</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-people display-4 text-success mb-3"></i>
+                    <h3 class="fw-bold">
+                        <% if (typeof projects !== 'undefined' && projects.length > 0) { %>
+                            <%= [...new Set(projects.map(p => p.email))].length %>
+                        <% } else { %>
+                            0
+                        <% } %>
+                    </h3>
+                    <p class="text-muted">Contributors</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-check-circle display-4 text-warning mb-3"></i>
+                    <h3 class="fw-bold">
+                        <% if (typeof projects !== 'undefined' && projects.length > 0) { %>
+                            <%= projects.filter(p => p.phase === 'complete').length %>
+                        <% } else { %>
+                            0
+                        <% } %>
+                    </h3>
+                    <p class="text-muted">Completed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Projects -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="bi bi-clock-history"></i> Recent Projects
+                </h2>
+                <a href="/search" class="btn btn-outline-primary">
+                    View All <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <% if (typeof projects === 'undefined' || projects.length === 0) { %>
+                <div class="text-center py-5">
+                    <i class="bi bi-folder-x display-1 text-muted"></i>
+                    <h3 class="text-muted mt-3">No projects found</h3>
+                    <p class="text-muted">Be the first to add a project!</p>
+                    <% if (typeof user === 'undefined' || !user) { %>
+                        <a href="/register" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i> Register to Add Projects
+                        </a>
+                    <% } else { %>
+                        <a href="/add-project" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Add Your First Project
+                        </a>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="row">
+                    <% projects.slice(0, 6).forEach(project => { %>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="card-title mb-0">
+                                            <a href="/project/<%= project.pid %>" class="text-decoration-none">
+                                                <%= project.title %>
+                                            </a>
+                                        </h5>
+                                        <% if (project.phase) { %>
+                                            <span class="phase-badge phase-<%= project.phase %>">
+                                                <%= project.phase.charAt(0).toUpperCase() + project.phase.slice(1) %>
+                                            </span>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted">
+                                        <%= project.short_description && project.short_description.length > 100 ? 
+                                            project.short_description.substring(0, 100) + '...' : 
+                                            project.short_description || 'No description available' %>
+                                    </p>
+                                    
+                                    <div class="mt-auto">
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar"></i> 
+                                            Started: <%= new Date(project.start_date).toLocaleDateString() %>
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-person"></i> 
+                                            by <%= project.username || project.email %>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="/project/<%= project.pid %>" class="btn btn-primary btn-sm w-100">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <% if (projects.length > 6) { %>
+                    <div class="text-center mt-4">
+                        <a href="/search" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-grid"></i> View All <%= projects.length %> Projects
+                        </a>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <% if (typeof user === 'undefined' || !user) { %>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center py-5">
+                        <h3 class="fw-bold mb-3">Ready to Share Your Projects?</h3>
+                        <p class="lead mb-4">
+                            Join our community and showcase your software development projects to the world.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="/register" class="btn btn-light btn-lg">
+                                <i class="bi bi-person-plus"></i> Register Now
+                            </a>
+                            <a href="/login" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>

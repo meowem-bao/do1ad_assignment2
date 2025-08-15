@@ -1,0 +1,66 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-kanban me-2"></i>Project Manager
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'home' ? 'active' : '' %>" href="/">
+                        <i class="bi bi-house me-1"></i>Home
+                    </a>
+                </li>
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'dashboard' ? 'active' : '' %>" href="/dashboard">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'add-project' ? 'active' : '' %>" href="/add-project">
+                            <i class="bi bi-plus-circle me-1"></i>Add Project
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+            
+            <ul class="navbar-nav">
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i><%= user.username %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/logout" method="POST" class="d-inline">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'login' ? 'active' : '' %>" href="/login">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'register' ? 'active' : '' %>" href="/register">
+                            <i class="bi bi-person-plus me-1"></i>Register
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,95 @@
+<!-- Error Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-exclamation-triangle"></i> Oops! Something went wrong
+                </h1>
+                <p class="lead mb-0">
+                    <%= typeof message !== 'undefined' ? message : 'An unexpected error occurred. Please try again later.' %>
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-bug display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-exclamation-circle display-1 text-danger"></i>
+                    </div>
+                    
+                    <h3 class="card-title mb-3">
+                        <%= typeof title !== 'undefined' ? title : 'Error' %>
+                    </h3>
+                    
+                    <p class="card-text text-muted mb-4">
+                        <%= typeof message !== 'undefined' ? message : 'Something unexpected happened. Our team has been notified.' %>
+                    </p>
+
+                    <!-- Error Details (Development Mode) -->
+                    <% if (typeof error !== 'undefined' && error && process.env.NODE_ENV === 'development') { %>
+                        <div class="alert alert-warning text-start mt-4">
+                            <h6 class="alert-heading">Technical Details (Development Mode)</h6>
+                            <% if (error.message) { %>
+                                <p><strong>Message:</strong> <%= error.message %></p>
+                            <% } %>
+                            <% if (error.stack) { %>
+                                <pre class="mb-0"><%= error.stack %></pre>
+                            <% } else { %>
+                                <p class="mb-0">No additional details available</p>
+                            <% } %>
+                        </div>
+                    <% } %>
+                    
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="/" class="btn btn-primary">
+                            <i class="bi bi-house"></i> Go Home
+                        </a>
+                        <button onclick="history.back()" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Go Back
+                        </button>
+                        <% if (typeof user !== 'undefined' && user) { %>
+                            <a href="/dashboard" class="btn btn-outline-primary">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        <% } else { %>
+                            <a href="/login" class="btn btn-outline-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-question-circle me-2"></i>Need Help?
+                    </h5>
+                    <p class="card-text">If this problem persists, here are some things you can try:</p>
+                    <ul class="mb-3">
+                        <li>Refresh the page and try again</li>
+                        <li>Clear your browser cache and cookies</li>
+                        <li>Make sure you're logged in if required</li>
+                        <li>Check your internet connection</li>
+                    </ul>
+                    <p class="mb-0">
+                        <small class="text-muted">
+                            If you continue experiencing issues, please contact support with the error details above.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

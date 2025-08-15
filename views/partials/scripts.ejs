@@ -1,0 +1,10 @@
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Dashboard specific JS (only load on dashboard page) -->
+<% if (typeof currentPage !== 'undefined' && currentPage === 'dashboard') { %>
+    <script src="/js/dashboard.js"></script>
+<% } %>
+
+<!-- Common JavaScript -->
+<script src="/js/common.js"></script>
